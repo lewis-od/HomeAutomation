@@ -1,4 +1,4 @@
-package uk.co.lewisodriscoll.haclient.services;
+package uk.co.lewisodriscoll.haclient.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
