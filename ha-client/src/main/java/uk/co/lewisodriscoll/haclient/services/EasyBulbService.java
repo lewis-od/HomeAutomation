@@ -15,10 +15,10 @@ public class EasyBulbService {
     private static final int CODE_ON = 0x42;
     private static final int CODE_OFF = 0x41;
 
-    @Value("${ha-client.easybulb.ip}")
+    @Value("${easybulb.ip}")
     private String easybulbBoxIp;
 
-    @Value("${ha-client.easybulb.port}")
+    @Value("${easybulb.port}")
     private int easybulbBoxPort;
 
 
