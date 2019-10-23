@@ -43,7 +43,7 @@ public class EasyBulbService {
         return new HaResponse("Success");
     }
 
-    private void sendBytes(byte[] bytesToSend) throws IOException, UnknownHostException {
+    private void sendBytes(byte[] bytesToSend) throws IOException {
         DatagramPacket packet = new DatagramPacket(
             bytesToSend,
             bytesToSend.length,
