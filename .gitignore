@@ -1,0 +1,19 @@
+## Generic stuff to ignore ##
+
+# Java stuff
+*.class
+*.jar
+
+# IntelliJ stuff
+/*/.idea
+**/*.iml
+
+# MacOS stuff
+.DS_Store
+
+## Service specific ##
+
+# HA Client
+ha-client/target
+ha-client/.mvn/wrapper/maven-wrapper.jar
+
