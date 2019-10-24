@@ -1,4 +1,4 @@
-package helloworld;
+package uk.co.lewisodriscoll.haserverless;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

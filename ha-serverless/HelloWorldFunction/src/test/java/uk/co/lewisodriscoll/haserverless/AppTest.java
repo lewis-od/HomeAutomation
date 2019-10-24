@@ -1,4 +1,4 @@
-package helloworld;
+package uk.co.lewisodriscoll.haserverless;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

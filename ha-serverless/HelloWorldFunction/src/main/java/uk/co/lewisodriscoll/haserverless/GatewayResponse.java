@@ -1,4 +1,4 @@
-package helloworld;
+package uk.co.lewisodriscoll.haserverless;
 
 import java.util.Collections;
 import java.util.HashMap;
