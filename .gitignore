@@ -17,3 +17,6 @@
 ha-client/target
 ha-client/.mvn/wrapper/maven-wrapper.jar
 
+# HA Serverless
+ha-serverless/HelloWorldFunction/.aws-sam
+
