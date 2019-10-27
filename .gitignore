@@ -15,6 +15,7 @@
 
 # HA Client
 ha-client/target
+ha-client/src/main/resources/AwsCredentials.properties
 ha-client/.mvn/wrapper/maven-wrapper.jar
 
 # HA Serverless
