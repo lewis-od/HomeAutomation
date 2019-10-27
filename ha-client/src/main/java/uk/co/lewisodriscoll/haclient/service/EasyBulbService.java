@@ -1,7 +1,9 @@
 package uk.co.lewisodriscoll.haclient.service;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
 
 import java.io.IOException;
@@ -21,6 +23,22 @@ public class EasyBulbService {
     @Value("${easybulb.port}")
     private int easybulbBoxPort;
 
+    private Logger log = Logger.getLogger(EasyBulbService.class);
+
+    public void performAction(HaAction action) {
+        switch (action.getAction()) {
+            case "on":
+                turnLightOn();
+                break;
+
+            case "off":
+                turnLightOff();
+                break;
+
+            default:
+                log.error("Unknown action: " + action.getAction());
+        }
+    }
 
     public HaResponse turnLightOn() {
         return sendCode(CODE_ON);
@@ -35,8 +53,10 @@ public class EasyBulbService {
         try {
             sendBytes(paddedCode);
         } catch (UnknownHostException e) {
+            log.error("Unknown host.", e);
             return new HaResponse("Unknown host");
         } catch (IOException e) {
+            log.error("IO exception occurred.", e);
             return new HaResponse("IO exception occurred");
         }
 
