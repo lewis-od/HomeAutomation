@@ -9,5 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class HaResponse {
+    public enum Status {
+        SUCCESS,
+        ERROR;
+    }
+
+    private Status status;
     private String message;
 }

@@ -53,14 +53,14 @@ public class EasyBulbService {
         try {
             sendBytes(paddedCode);
         } catch (UnknownHostException e) {
-            log.error("Unknown host.", e);
-            return new HaResponse("Unknown host");
+            log.error("Unknown host.");
+            return new HaResponse(HaResponse.Status.ERROR, "Unknown host");
         } catch (IOException e) {
             log.error("IO exception occurred.", e);
-            return new HaResponse("IO exception occurred");
+            return new HaResponse(HaResponse.Status.ERROR, "IO exception occurred");
         }
 
-        return new HaResponse("Success");
+        return new HaResponse(HaResponse.Status.SUCCESS, "Action completed");
     }
 
     private void sendBytes(byte[] bytesToSend) throws IOException {
