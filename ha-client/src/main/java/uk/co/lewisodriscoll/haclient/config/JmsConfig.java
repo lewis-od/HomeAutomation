@@ -1,9 +1,12 @@
 package uk.co.lewisodriscoll.haclient.config;
 
+import com.amazon.sqs.javamessaging.ProviderConfiguration;
 import com.amazon.sqs.javamessaging.SQSConnectionFactory;
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sqs.AmazonSQSClient;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -16,11 +19,13 @@ import javax.jms.Session;
 @EnableJms
 public class JmsConfig {
 
-    private SQSConnectionFactory connectionFactory =
-        SQSConnectionFactory.builder()
-            .withRegion(Region.getRegion(Regions.EU_WEST_2))
-            .withAWSCredentialsProvider(new ClasspathPropertiesFileCredentialsProvider())
-            .build();
+    private SQSConnectionFactory connectionFactory = new SQSConnectionFactory(
+            new ProviderConfiguration(),
+            AmazonSQSClient.builder()
+                .withCredentials(new ClasspathPropertiesFileCredentialsProvider())
+                .withRegion(Regions.EU_WEST_2)
+                .build()
+    );
 
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
