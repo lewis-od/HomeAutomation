@@ -19,7 +19,5 @@ The SQS messages are JSON of the format:
 
 
 ## ToDo:
-- [ ] Add parent `pom.xml` to root dir, with `ha-client` and `ha-serverless` as sub projects
-- [ ] Extract common code (the `HaAction` class in `ha-client`) to `ha-core` project
-- [ ] Actually implement `ha-serverless`
+- [ ] Finish implementation of `ha-serverless`
 - [ ] Look into making an Alexa skill
