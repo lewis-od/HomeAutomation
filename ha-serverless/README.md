@@ -19,5 +19,7 @@ aws cloudformation delete-stack --stack-name home-automation
 Note: `sam deploy` is an alias for `aws cloudformation deploy`
 
 # ToDo
-- [ ] Add JSON message to queue based on event
+- [x] Add JSON message to queue based on event
 - [ ] Require API key for authentication/authorisation
+- [ ] Make SQS queue FIFO
+

@@ -9,3 +9,9 @@ to `src/main/resources` with the contents:
 accessKey=<your AWS access key>
 secretKey=<your AWS secret key>
 ```
+
+## ToDo
+- [ ] Use `maven-shade-plugin` to minify jar
+- [ ] Build for deployment using Docker
+- [ ] Implememt more actions
+

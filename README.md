@@ -19,6 +19,4 @@ The SQS messages are JSON of the format:
 
 
 ## ToDo:
-- [x] Finish implementation of `ha-serverless`
-- [ ] Change SQS queue to a FIFO queue(?)
 - [ ] Look into making an Alexa skill
