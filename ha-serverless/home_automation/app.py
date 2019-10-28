@@ -4,6 +4,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
+
 def send_sqs_message(sqs_queue_url, msg_body):
     """
     :param sqs_queue_url: String URL of existing SQS queue
@@ -24,7 +25,20 @@ def send_sqs_message(sqs_queue_url, msg_body):
 
 
 def lambda_handler(event, context):
-    result = send_sqs_message(os.environ.get('SQS_QUEUE_URL'), f'Test message')
+    queryStringParams = event.get('queryStringParameters', None)
+    action = None if queryStringParams is None else queryStringParams.get('action', None)
+
+    if action is None:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({ 
+                'status': 'ERROR',
+                'message': 'Action parameter not provided in query string.'
+            })
+        }
+
+    message = { 'service': 'easybulb', 'action': action }
+    result = send_sqs_message(os.environ.get('SQS_QUEUE_URL'), json.dumps(message))
     
     if result is None:
         response = { 'statusCode': 500, 'body': json.dumps({ 'status': 'ERROR' }) }
