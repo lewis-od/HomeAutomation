@@ -3,41 +3,43 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   ha-serverless
 
-  Functions to add home automation actions to an SQS queue
+  Home Automation SAM app
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 20
+    Timeout: 3
 
 Resources:
-  LightsOffFunction:
+  HomeAutomationQueue:
+    Type: AWS::SQS::Queue
+    Properties: 
+      DelaySeconds: 0
+      MessageRetentionPeriod: 3600 # in seconds - 1 hour
+      QueueName: "home-automation"
+      ReceiveMessageWaitTimeSeconds: 1
+      VisibilityTimeout: 5
+
+  LightsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeURI: LightsOffFunction
-      Handler: uk.co.lewisodriscoll.haserverless.App::handleRequest
-      Runtime: java8
-      MemorySize: 512
+      CodeUri: home_automation/
+      Handler: app.lambda_handler
+      Runtime: python3.7
       Policies:
         - SQSSendMessagePolicy:
-            QueueName: "home-automation"
+            QueueName: !GetAtt HomeAutomationQueue.QueueName
+      Environment:
+        Variables:
+          SQS_QUEUE_URL: !Ref HomeAutomationQueue
       Events:
         Lights:
-          Type: Api
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /off
+            Path: /lights
             Method: get
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   LightsApi:
-    Description: "API Gateway endpoint URL for Prod stage for Lights Off function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/off/"
-  LightsOffFunction:
-    Description: "Lights off Lambda function ARN"
-    Value: !GetAtt LightsOffFunction.Arn
-  LightsOffFunctionIamRole:
-    Description: "Implicit IAM Role created for Lights Off function"
-    Value: !GetAtt LightsOffFunction.Arn
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/lights/"

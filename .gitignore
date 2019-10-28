@@ -19,6 +19,6 @@ ha-client/src/main/resources/AwsCredentials.properties
 ha-client/.mvn/wrapper/maven-wrapper.jar
 
 # HA Serverless
-ha-serverless/HelloWorldFunction/.aws-sam
-ha-serverless/HelloWorldFunction/target/
+ha-serverless/.aws-sam
+ha-serverless/packaged.yaml
 
