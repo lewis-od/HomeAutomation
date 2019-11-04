@@ -27,11 +27,11 @@ public class EasyBulbService {
 
     public void performAction(HaAction action) {
         switch (action.getAction()) {
-            case "on":
+            case "TurnOn":
                 turnLightOn();
                 break;
 
-            case "off":
+            case "TurnOff":
                 turnLightOff();
                 break;
 
