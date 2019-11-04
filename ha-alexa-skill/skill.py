@@ -29,7 +29,7 @@ def send_sqs_message(msg_body):
         
     return msg
 
-def handlePowerControl(event, context):
+def handle_power_control(event, context):
     request_method = event['directive']['header']['name']
     
     response_header = event['directive']['header']
@@ -111,7 +111,7 @@ def handlePowerControl(event, context):
     return response
     
 
-def handleDiscovery(event, context):
+def handle_discovery(event, context):
     payload = {
         'endpoints': [
             {
@@ -148,10 +148,10 @@ def handleDiscovery(event, context):
 def lambda_handler(event, context):
     if event['directive']['header']['namespace'] == 'Alexa.Discovery' and event['directive']['header']['name'] == 'Discover':
         logger.debug('Discover request: {}'.format(json.dumps(event)))
-        return handleDiscovery(event, context)
+        return handle_discovery(event, context)
     elif event['directive']['header']['namespace'] == 'Alexa.PowerController':
         logger.debug('PowerController request: {}'.format(json.dumps(event)))
-        return handlePowerControl(event, context)
+        return handle_power_control(event, context)
         
     logger.error('Unknown request received: {}'.format(json.dumps(event)))
 
