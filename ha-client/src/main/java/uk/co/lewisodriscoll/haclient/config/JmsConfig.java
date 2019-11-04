@@ -23,7 +23,7 @@ public class JmsConfig {
             new ProviderConfiguration(),
             AmazonSQSClient.builder()
                 .withCredentials(new ClasspathPropertiesFileCredentialsProvider())
-                .withRegion(Regions.EU_WEST_2)
+                .withRegion(Regions.EU_WEST_1)
                 .build()
     );
 
