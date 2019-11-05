@@ -19,4 +19,5 @@ The SQS messages are JSON of the format:
 
 
 ## ToDo:
-- [ ] Look into making an Alexa skill
+- [x] Look into making an Alexa skill
+- [ ] Implement more actions (Alexa skill and client)
