@@ -22,5 +22,6 @@ docker run -p 8080:8080 ha-client:latest
 - [ ] Use `maven-shade-plugin` to minify jar
 - [x] Build for deployment using Docker
 - [ ] Implememt more actions
+- [ ] Better AWS credential management
 - [ ] Deploy to Raspberry Pi using Kubernetes(?)
 
