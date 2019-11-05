@@ -20,6 +20,7 @@ The SQS messages are JSON of the format:
 
 ## ToDo:
 - [x] Look into making an Alexa skill
+- [ ] Tidy up Alexa skill code
 - [ ] Implement more actions 
 - [ ] Use `maven-shade-plugin` to minify client jar
 - [x] Build for deployment using Docker
