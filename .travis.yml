@@ -1,0 +1,15 @@
+services:
+  - docker
+
+script:
+  - cd ha-client
+  - echo "accessKey=$AWS_ACCESS_KEY\nsecretKey=$AWS_SECRET_KEY\n" > \
+          src/main/resources/AwsCredentials.properties
+  - docker build -t "${DOCKER_USER}/ha-client" .
+
+deploy:
+  provider: script
+  script: bash docker-push.sh
+  on:
+    branch: master
+
