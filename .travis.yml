@@ -4,7 +4,7 @@ services:
 script:
   - cd "$TRAVIS_BUILD_DIR/ha-client"
   - touch src/main/resources/AwsCredentials.properties
-  - echo "accessKey=$AWS_ACCESS_KEY\nsecretKey=$AWS_SECRET_KEY\n" > src/main/resources/AwsCredentials.properties
+  - printf "accessKey=$AWS_ACCESS_KEY\nsecretKey=$AWS_SECRET_KEY\n" > src/main/resources/AwsCredentials.properties
   - docker build -t "${DOCKER_USER}/ha-client" .
   - cd "$TRAVIS_BUILD_DIR"
 
