@@ -9,7 +9,7 @@ script:
 
 deploy:
   provider: script
-  script: bash docker-push.sh
+  script: ./docker-push.sh
   on:
     branch: master
 
