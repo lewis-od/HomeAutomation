@@ -3,6 +3,8 @@ services:
 
 script:
   - cd ha-client
+  - ls
+  - pwd
   - echo "accessKey=$AWS_ACCESS_KEY\nsecretKey=$AWS_SECRET_KEY\n" > \
           src/main/resources/AwsCredentials.properties
   - docker build -t "${DOCKER_USER}/ha-client" .
