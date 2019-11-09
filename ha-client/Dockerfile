@@ -16,7 +16,7 @@ RUN ./mvnw dependency:go-offline -B
 
 # Copy whole project and build to jar
 COPY . .
-RUN mvn package -DskipTests
+RUN ./mvnw package -DskipTests
 
 # Run the jar
 EXPOSE 8080
