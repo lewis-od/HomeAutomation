@@ -1,16 +1,23 @@
-FROM maven:3.6.2-amazoncorretto-8 AS build
+FROM alpine:latest
+
+# Install java 8
+RUN apk add openjdk8
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+
 WORKDIR /app
+
+# Use Maven wrapper so we don't need to install Maven
+COPY .mvn .mvn
+COPY mvnw mvnw
 
 # Copy only pom - this step then only gets ran when dependencies change
 COPY pom.xml pom.xml
-RUN mvn dependency:go-offline -B
+RUN ./mvnw dependency:go-offline -B
 
-# Copy whole project and build
+# Copy whole project and build to jar
 COPY . .
 RUN mvn package -DskipTests
 
-# User smaller image for deployment
-FROM amazoncorretto:8
-COPY --from=build /app/target/ha-client-*.jar /app/target/ha-client.jar
+# Run the jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/target/ha-client.jar"]
