@@ -1,4 +1,4 @@
-arch: amd64
+arch: arm64
 services:
   - docker
 
