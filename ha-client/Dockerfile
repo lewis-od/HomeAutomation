@@ -20,4 +20,5 @@ RUN ./mvnw package -DskipTests
 
 # Run the jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/target/ha-client.jar"]
+ENTRYPOINT ["java", "-jar", "/app/target/ha-client-0.0.1-SNAPSHOT.jar"]
+
