@@ -26,19 +26,19 @@ def send_sqs_message(msg_body):
     except (ClientError, ParamValidationError) as e:
         logging.error(e)
         return None
-        
+
     return msg
 
-def handle_power_control(event, context):
+def handlePowerControl(event, context):
     request_method = event['directive']['header']['name']
-    
+
     response_header = event['directive']['header']
     response_header['namespace'] = "Alexa"
     response_header['name'] = "Response"
     response_header['messageId'] = response_header["messageId"] + "-R"
-    
+
     request_token = event['directive']['endpoint']['scope']['token']
-    
+
     if request_method == "TurnOn":
         power_result = "ON"
     elif request_method == "TurnOff":
@@ -58,10 +58,10 @@ def handle_power_control(event, context):
             }
         }
         return error_response
-    
+
     sqs_message = json.dumps({ 'service': 'easybulb', 'action': request_method })
     sqs_result = send_sqs_message(sqs_message)
-    
+
     if sqs_result is None:
         response_header['name'] = "ErrorResponse"
         error_response = {
@@ -76,10 +76,10 @@ def handle_power_control(event, context):
                 }
             }
         }
-        
+
         return error_response
 
-    
+
     context_result = {
         "properties": [{
             "namespace": "Alexa.PowerController",
@@ -90,7 +90,7 @@ def handle_power_control(event, context):
             "uncertaintyInMilliseconds": 500
         }]
     }
-    
+
     response = {
         "context": context_result,
         "event": {
@@ -105,13 +105,95 @@ def handle_power_control(event, context):
             "payload": {}
         }
     }
-    
-    logging.debug("PowerController response is: {}".format(json.dumps(response)))
-    
-    return response
-    
 
-def handle_discovery(event, context):
+    logging.debug("PowerController response is: {}".format(json.dumps(response)))
+
+    return response
+
+def handleColourControl(event, context):
+    request_method = event['directive']['header']['name']
+
+    response_header = event['directive']['header']
+    response_header['namespace'] = "Alexa"
+    response_header['name'] = "Response"
+    response_header['messageId'] = response_header["messageId"] + "-R"
+    
+    request_token = event['directive']['endpoint']['scope']['token']
+
+    if request_method != 'SetColor':
+        logger.error('Invalid request directive "' + request_method + '". Should be SetColor')
+        response_header['name'] = "ErrorResponse"
+        error_response = {
+            "event": {
+                "header": response_header,
+                "endpoint":{
+                    "endpointId": "demo_id"
+                },
+                "payload": {
+                    "type": "Request method error",
+                    "message": "Unknown request method: {}".format(request_method)
+                }
+            }
+        }
+        return error_response
+
+    colour = event['directive']['payload']['color']
+    hsv = [str(colour[k]) for k in ['hue', 'saturation', 'brightness']]
+    colour_str = ", ".join(hsv)
+
+    sqs_message = json.dumps({
+        "service": "easybulb",
+        "action": request_method,
+        "value": colour_str
+    })
+    sqs_result = send_sqs_message(sqs_message)
+
+    if sqs_result is None:
+        response_header['name'] = "ErrorResponse"
+        error_response = {
+            "event": {
+                "header": response_header,
+                "endpoint":{
+                    "endpointId": "demo_id"
+                },
+                "payload": {
+                    "type": "SQS Error",
+                    "message": "An error ocurred adding the message to the SQS queue"
+                }
+            }
+        }
+
+        return error_response
+
+    context_result = {
+        "properties": [{
+            "namespace": "Alexa.ColorController",
+            "name": "color",
+            "value": colour,
+            "timeOfSample": time.strftime("%Y-%m-%dT%H:%M:%S.00Z", time.gmtime()),
+            "uncertaintyInMilliseconds": 500
+        }]
+    }
+
+    response = {
+        "context": context_result,
+        "event": {
+            "header": response_header,
+            "endpoint": {
+                "scope": {
+                    "type": "BearerToken",
+                    "token": request_token
+                },
+                "endpointId": "demo_id"
+            },
+            "payload": {}
+        }
+    }
+
+    return response
+
+
+def handleDiscovery(event, context):
     payload = {
         'endpoints': [
             {
@@ -135,6 +217,16 @@ def handle_discovery(event, context):
                             "retrievable": False,
                             "proactivelyReported": False
                         }
+                    },
+                    {
+                        "type": "AlexaInterface",
+                        "version": "3",
+                        "interface": "Alexa.ColorController",
+                        "properties": {
+                            "supported": [{"name": "color"}],
+                            "proactivelyReported": False,
+                            "retrievable": False
+                         }
                     }
                 ]
             },
@@ -148,10 +240,12 @@ def handle_discovery(event, context):
 def lambda_handler(event, context):
     if event['directive']['header']['namespace'] == 'Alexa.Discovery' and event['directive']['header']['name'] == 'Discover':
         logger.debug('Discover request: {}'.format(json.dumps(event)))
-        return handle_discovery(event, context)
+        return handleDiscovery(event, context)
     elif event['directive']['header']['namespace'] == 'Alexa.PowerController':
         logger.debug('PowerController request: {}'.format(json.dumps(event)))
-        return handle_power_control(event, context)
-        
-    logger.error('Unknown request received: {}'.format(json.dumps(event)))
+        return handlePowerControl(event, context)
+    elif event['directive']['header']['namespace'] == 'Alexa.ColorController':
+        logger.debug('ColorController request: {}'.format(json.dumps(event)))
+        return handleColourControl(event, context)
 
+    logger.error('Unknown request received: {}'.format(json.dumps(event)))
