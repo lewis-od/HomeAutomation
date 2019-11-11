@@ -32,6 +32,11 @@ public class LocalHaController {
         return ResponseEntity.ok(easyBulbService.turnLightOff());
     }
 
+    @RequestMapping("/white")
+    public ResponseEntity<HaResponse> white() {
+        return ResponseEntity.ok(easyBulbService.turnLightWhite());
+    }
+
     @RequestMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
         Color colour = new Color(r, g, b);

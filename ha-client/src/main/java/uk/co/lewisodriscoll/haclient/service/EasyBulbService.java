@@ -21,6 +21,7 @@ import java.util.List;
 public class EasyBulbService {
     private static final int CODE_ON = 0x42;
     private static final int CODE_OFF = 0x41;
+    private static final int CODE_WHITE = 0xC2;
     private static final int CODE_COLOUR = 0x40;
 
     @Value("${easybulb.ip}")
@@ -59,7 +60,12 @@ public class EasyBulbService {
                 }
                 Color colour = Color.getHSBColor(hsb[0] / 360.0f, hsb[1], hsb[2]);
 
-                setLightColour(colour);
+                // Easybulb doesn't handle low saturation well - turn white
+                if (hsb[1] < 0.5f) {
+                    turnLightWhite();
+                } else {
+                    setLightColour(colour);
+                }
                 break;
 
             default:
@@ -73,6 +79,10 @@ public class EasyBulbService {
 
     public HaResponse turnLightOff() {
         return sendCode(CODE_OFF);
+    }
+
+    public HaResponse turnLightWhite() {
+        return sendCode(CODE_WHITE);
     }
 
     public HaResponse setLightColour(Color colour) {
