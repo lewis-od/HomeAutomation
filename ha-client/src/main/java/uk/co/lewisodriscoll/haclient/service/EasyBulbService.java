@@ -3,19 +3,25 @@ package uk.co.lewisodriscoll.haclient.service;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
 import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class EasyBulbService {
     private static final int CODE_ON = 0x42;
     private static final int CODE_OFF = 0x41;
+    private static final int CODE_COLOUR = 0x40;
 
     @Value("${easybulb.ip}")
     private String easybulbBoxIp;
@@ -35,6 +41,27 @@ public class EasyBulbService {
                 turnLightOff();
                 break;
 
+            case "SetColor":
+                String[] parts = action.getValue().split(", ");
+
+                if (parts.length != 3) {
+                    log.error("Invalid colour: " + action.getAction());
+                }
+
+                float[] hsb = {0.0f, 0.0f, 0.0f};
+                try {
+                    for (int i = 0; i < 2; i++) {
+                        hsb[i] = Float.parseFloat(parts[i]);
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("Invalid float format");
+                    log.error(e);
+                }
+                Color colour = Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
+
+                setLightColour(colour);
+                break;
+
             default:
                 log.error("Unknown action: " + action.getAction());
         }
@@ -48,8 +75,13 @@ public class EasyBulbService {
         return sendCode(CODE_OFF);
     }
 
-    private HaResponse sendCode(int code) {
-        byte[] paddedCode = { (byte) code, 0x00, 0x55 };
+    public HaResponse setLightColour(Color colour) {
+        int hue = ColourHelper.getEasybulbHue(colour);
+        return sendCode(CODE_COLOUR, hue);
+    }
+
+    private HaResponse sendCode(int code, int value) {
+        byte[] paddedCode = { (byte) code, (byte) value, 0x55 };
         try {
             sendBytes(paddedCode);
         } catch (UnknownHostException e) {
@@ -61,6 +93,10 @@ public class EasyBulbService {
         }
 
         return new HaResponse(HaResponse.Status.SUCCESS, "Action completed");
+    }
+
+    private HaResponse sendCode(int code) {
+        return sendCode(code, 0x00);
     }
 
     private void sendBytes(byte[] bytesToSend) throws IOException {

@@ -22,7 +22,7 @@ public class HaAction {
     @NonNull
     private String action;
 
-    private float value;
+    private String value;
 
     public static HaAction fromJson(String json) throws JsonProcessingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
