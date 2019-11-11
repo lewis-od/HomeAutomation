@@ -50,14 +50,14 @@ public class EasyBulbService {
 
                 float[] hsb = {0.0f, 0.0f, 0.0f};
                 try {
-                    for (int i = 0; i < 2; i++) {
+                    for (int i = 0; i < 3; i++) {
                         hsb[i] = Float.parseFloat(parts[i]);
                     }
                 } catch (NumberFormatException e) {
                     log.error("Invalid float format");
                     log.error(e);
                 }
-                Color colour = Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
+                Color colour = Color.getHSBColor(hsb[0] / 360.0f, hsb[1], hsb[2]);
 
                 setLightColour(colour);
                 break;
