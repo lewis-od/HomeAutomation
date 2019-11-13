@@ -1,6 +1,5 @@
 package uk.co.lewisodriscoll.haclient.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -14,7 +13,7 @@ import java.io.IOException;
 public class QueueListenerService {
 
     @Autowired
-    private EasyBulbService easyBulbService;
+    private EasybulbService easyBulbService;
 
     private Logger log = Logger.getLogger(QueueListenerService.class);
 

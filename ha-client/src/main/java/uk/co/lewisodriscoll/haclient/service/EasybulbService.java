@@ -15,7 +15,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Service
-public class EasyBulbService {
+public class EasybulbService {
     private static final int CODE_ON = 0x42;
     private static final int CODE_OFF = 0x41;
     private static final int CODE_WHITE = 0xC2;
@@ -28,7 +28,7 @@ public class EasyBulbService {
     @Value("${easybulb.port}")
     private int easybulbBoxPort;
 
-    private Logger log = Logger.getLogger(EasyBulbService.class);
+    private Logger log = Logger.getLogger(EasybulbService.class);
 
     public void performAction(HaAction action) {
         switch (action.getAction()) {

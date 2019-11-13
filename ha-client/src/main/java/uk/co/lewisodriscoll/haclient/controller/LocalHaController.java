@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
-import uk.co.lewisodriscoll.haclient.service.EasyBulbService;
+import uk.co.lewisodriscoll.haclient.service.EasybulbService;
 
 import java.awt.*;
 
@@ -15,10 +15,10 @@ import java.awt.*;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LocalHaController {
 
-    private EasyBulbService easyBulbService;
+    private EasybulbService easyBulbService;
 
     @Autowired
-    public LocalHaController(EasyBulbService easyBulbService) {
+    public LocalHaController(EasybulbService easyBulbService) {
         this.easyBulbService = easyBulbService;
     }
 
