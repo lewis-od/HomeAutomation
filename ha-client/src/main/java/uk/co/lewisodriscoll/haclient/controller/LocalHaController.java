@@ -43,4 +43,9 @@ public class LocalHaController {
         return ResponseEntity.ok(easyBulbService.setLightColour(colour));
     }
 
+    @RequestMapping("/brightness")
+    public ResponseEntity<HaResponse> brightness(@RequestParam int percentage) {
+        return ResponseEntity.ok(easyBulbService.setLightBrightness(percentage));
+    }
+
 }

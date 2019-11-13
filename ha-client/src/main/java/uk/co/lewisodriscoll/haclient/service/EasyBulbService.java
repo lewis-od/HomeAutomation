@@ -23,6 +23,7 @@ public class EasyBulbService {
     private static final int CODE_OFF = 0x41;
     private static final int CODE_WHITE = 0xC2;
     private static final int CODE_COLOUR = 0x40;
+    private static final int CODE_BRIGHTNESS = 0x4E;
 
     @Value("${easybulb.ip}")
     private String easybulbBoxIp;
@@ -88,6 +89,11 @@ public class EasyBulbService {
     public HaResponse setLightColour(Color colour) {
         int hue = ColourHelper.getEasybulbHue(colour);
         return sendCode(CODE_COLOUR, hue);
+    }
+
+    public HaResponse setLightBrightness(int percentage) {
+        int brightness = ColourHelper.percentageToEasybulb(percentage);
+        return sendCode(CODE_BRIGHTNESS, brightness);
     }
 
     private HaResponse sendCode(int code, int value) {
