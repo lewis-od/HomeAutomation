@@ -3,6 +3,7 @@ package uk.co.lewisodriscoll.haclient.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class LocalHaController {
         this.ingestionService = ingestionService;
     }
 
-    @RequestMapping("/on")
+    @GetMapping("/on")
     public ResponseEntity<HaResponse> on() {
         HaAction action = HaAction.builder()
                 .service("easybulb")
@@ -35,7 +36,7 @@ public class LocalHaController {
         return responseToEntity(ingestionService.ingest(action));
     }
 
-    @RequestMapping("/off")
+    @GetMapping("/off")
     public ResponseEntity<HaResponse> off() {
         HaAction action = HaAction.builder()
                 .service("easybulb")
@@ -45,7 +46,7 @@ public class LocalHaController {
         return responseToEntity(ingestionService.ingest(action));
     }
 
-    @RequestMapping("/white")
+    @GetMapping("/white")
     public ResponseEntity<HaResponse> white() {
         Color white = Color.white;
         HaAction action = HaAction.builder()
@@ -57,7 +58,7 @@ public class LocalHaController {
         return responseToEntity(ingestionService.ingest(action));
     }
 
-    @RequestMapping("/colour")
+    @GetMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
         Color colour = new Color(r, g, b);
         HaAction action = HaAction.builder()
@@ -69,7 +70,7 @@ public class LocalHaController {
         return responseToEntity(ingestionService.ingest(action));
     }
 
-    @RequestMapping("/brightness")
+    @GetMapping("/brightness")
     public ResponseEntity<HaResponse> brightness(@RequestParam int percentage) {
         HaAction action = HaAction.builder()
                 .service("easybulb")
