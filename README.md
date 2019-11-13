@@ -20,7 +20,7 @@ The `action` parameter matches those from the [Alexa messages](https://developer
 
 ## Setup
 1. Create an SQS queue in `eu-west-1` called `home-automation`
-2. Follow the instructions in [ha-alexa-skill](ha-alexa-skill)
+2. Follow the instructions in [ha-alexa-skills](ha-alexa-skills)
 3. Follow the instructions in [ha-client](ha-client)
 
 ## ToDo:
