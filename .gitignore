@@ -8,6 +8,9 @@
 /*/.idea
 **/*.iml
 
+# VS Code stuff
+*.vscode
+
 # MacOS stuff
 .DS_Store
 
