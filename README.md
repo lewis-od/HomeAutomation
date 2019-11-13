@@ -2,27 +2,28 @@
 My attempt at a home automation solution.
 
 ## Architecture
-The eventual aim is to have some AWS Lambda functions that can be called via
-HTTP, which will add some 'Actions' to an SQS queue.
+The code in `ha-alexa-skills` contains a Lambda function that acts as an [Alexa Smart Home skill](https://developer.amazon.com/docs/smarthome/understand-the-smart-home-skill-api.html).
+This is triggered by voice commands to Alexa, and adds messages ("actions") to an SQS queue.
 
-These actions will then be consumed by a client running on my local network
-(probably on a Raspberry Pi), which can communicate with various devices.
+These actions are then consumed by the application in `ha-client` that runs on a Raspberry PI on my
+local network.
 
 The SQS messages are JSON of the format:
 ```json
 {
-  "service": "eastbulb",
-  "action": "brightness",
-  "value": 0.85
+  "service": "easybulb",
+  "action": "SetBrightness",
+  "value": "80"
 }
 ```
-
+The `action` parameter matches those from the [Alexa messages](https://developer.amazon.com/docs/smarthome/smart-home-skill-api-message-reference.html#lighting-and-tunable-lighting-control-messages).
 
 ## ToDo:
 - [x] Look into making an Alexa skill
-- [ ] Tidy up Alexa skill code
-- [ ] Implement more actions 
+- [x] Tidy up Alexa skill code
+- [ ] Implement `SetBrightness` in Alexa skill
 - [ ] Use `maven-shade-plugin` to minify client jar
 - [x] Build for deployment using Docker
 - [ ] Better AWS credential management in client
-- [ ] Deploy client to Raspberry Pi using Kubernetes(?)
+- [ ] Build Docker image using mvn
+- [ ] Send client logs to log file
