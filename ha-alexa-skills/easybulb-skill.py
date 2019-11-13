@@ -20,6 +20,8 @@ def send_sqs_message(msg_body):
         logging.error(e)
         return None
 
+    logging.info("Sent SQS message: " + msg_body)
+
     return msg
 
 
