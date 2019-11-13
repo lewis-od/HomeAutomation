@@ -60,7 +60,7 @@ public class LocalHaController {
 
     @GetMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
-        Color colour = new Color(r, g, b);
+        Color colour = new Color(r, b, g); // TODO: Why do b & g need swapping?
         HaAction action = HaAction.builder()
                 .service("easybulb")
                 .action("SetColor")

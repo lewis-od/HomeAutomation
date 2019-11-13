@@ -32,9 +32,9 @@ public class ActionIngestionService {
                 String errorMessage = "Unknown service: " + action.getService();
                 log.error(errorMessage);
                 return HaResponse.builder()
-                    .status(HaResponse.Status.ERROR)
-                    .message(errorMessage)
-                    .build();
+                        .status(HaResponse.Status.ERROR)
+                        .message(errorMessage)
+                        .build();
         }
     }
 
@@ -47,41 +47,45 @@ public class ActionIngestionService {
                 return easybulbService.turnLightOff();
 
             case "SetColor":
-                String[] parts = action.getValue().split(", ");
-
-                if (parts.length != 3) {
-                    log.error("Invalid colour: " + action.getAction());
-                }
-
-                float[] hsb = {0.0f, 0.0f, 0.0f};
+                Color colour = null;
                 try {
-                    for (int i = 0; i < 3; i++) {
-                        hsb[i] = Float.parseFloat(parts[i]);
-                    }
+                    colour = ColourHelper.stringToColour(action.getValue());
                 } catch (NumberFormatException e) {
-                    log.error("Invalid float format");
-                    log.error(e);
+                    return HaResponse.builder()
+                            .status(HaResponse.Status.ERROR)
+                            .message("Invalid colour format: " + action.getValue())
+                            .build();
                 }
-                Color colour = Color.getHSBColor(hsb[0] / 360.0f, hsb[1], hsb[2]);
+
+                float saturation = ColourHelper.getSaturation(colour);
 
                 // Easybulb doesn't handle low saturation well - turn white
-                if (hsb[1] < 0.5f) {
+                if (saturation < 0.5f) {
                     return easybulbService.turnLightWhite();
                 }
 
                 return easybulbService.setLightColour(ColourHelper.colourToEasybulbHue(colour));
 
             case "SetBrightness":
-                int percentage = Integer.parseInt(action.getValue());
+                int percentage;
+                try {
+                    percentage = Integer.parseInt(action.getValue());
+                } catch (NumberFormatException e) {
+                    return HaResponse.builder()
+                            .status(HaResponse.Status.ERROR)
+                            .message("Invalid brightness: " + action.getValue())
+                            .build();
+                }
+
                 return easybulbService.setLightBrightness(ColourHelper.percentageToEasybulb(percentage));
 
             default:
                 String errorMessage = "Unknown action: " + action.getAction();
                 log.error(errorMessage);
                 return HaResponse.builder()
-                    .status(HaResponse.Status.ERROR)
-                    .message(errorMessage)
-                    .build();
+                        .status(HaResponse.Status.ERROR)
+                        .message(errorMessage)
+                        .build();
         }
     }
 
