@@ -11,6 +11,7 @@ logger.setLevel(logging.DEBUG)
 sqs_client = boto3.client('sqs')
 sqs_queue_url = os.environ.get('SQS_QUEUE_URL')
 
+
 def send_sqs_message(msg_body):
     try:
         msg = sqs_client.send_message(QueueUrl=sqs_queue_url,
@@ -21,6 +22,7 @@ def send_sqs_message(msg_body):
 
     return msg
 
+
 def construct_response_header(event):
     response_header = event['directive']['header']
     response_header['namespace'] = "Alexa"
@@ -28,6 +30,7 @@ def construct_response_header(event):
     response_header['messageId'] = response_header["messageId"] + "-R"
 
     return response_header
+
 
 def construct_sqs_error_response(response_header):
     response_header['name'] = "ErrorResponse"
@@ -44,12 +47,13 @@ def construct_sqs_error_response(response_header):
         }
     }
 
+
 def construct_method_error_response(response_header, request_method):
     response_header['name'] = "ErrorResponse"
     error_response = {
         "event": {
             "header": response_header,
-            "endpoint":{
+            "endpoint": {
                 "endpointId": "demo_id"
             },
             "payload": {
@@ -59,6 +63,7 @@ def construct_method_error_response(response_header, request_method):
         }
     }
     return error_response
+
 
 def construct_success_response(context_result, request_token):
     return {
@@ -76,6 +81,7 @@ def construct_success_response(context_result, request_token):
         }
     }
 
+
 def handle_power_control(event, context):
     request_method = event['directive']['header']['name']
     request_token = event['directive']['endpoint']['scope']['token']
@@ -89,7 +95,7 @@ def handle_power_control(event, context):
     else:
         return construct_method_error_response(response_header, request_method)
 
-    sqs_message = json.dumps({ 'service': 'easybulb', 'action': request_method })
+    sqs_message = json.dumps({'service': 'easybulb', 'action': request_method})
     sqs_result = send_sqs_message(sqs_message)
 
     if sqs_result is None:
@@ -107,6 +113,7 @@ def handle_power_control(event, context):
     }
 
     return construct_success_response(context_result, request_token)
+
 
 def handle_colour_control(event, context):
     request_method = event['directive']['header']['name']
@@ -164,7 +171,7 @@ def handleDiscovery(event, context):
                         "version": "3",
                         "type": "AlexaInterface",
                         "properties": {
-                            "supported": [{ "name": "powerState" }],
+                            "supported": [{"name": "powerState"}],
                             "retrievable": False,
                             "proactivelyReported": False
                         }
@@ -177,7 +184,7 @@ def handleDiscovery(event, context):
                             "supported": [{"name": "color"}],
                             "proactivelyReported": False,
                             "retrievable": False
-                         }
+                        }
                     }
                 ]
             },
@@ -185,7 +192,7 @@ def handleDiscovery(event, context):
     }
     header = event['directive']['header']
     header['name'] = "Discover.Response"
-    return { "event": { "header": header, "payload": payload } }
+    return {"event": {"header": header, "payload": payload}}
 
 
 def lambda_handler(event, context):
