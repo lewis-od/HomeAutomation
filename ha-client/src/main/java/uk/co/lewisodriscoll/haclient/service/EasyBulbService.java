@@ -13,9 +13,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.List;
 
 @Service
 public class EasyBulbService {
@@ -87,7 +84,7 @@ public class EasyBulbService {
     }
 
     public HaResponse setLightColour(Color colour) {
-        int hue = ColourHelper.getEasybulbHue(colour);
+        int hue = ColourHelper.colourToEasybulbHue(colour);
         return sendCode(CODE_COLOUR, hue);
     }
 

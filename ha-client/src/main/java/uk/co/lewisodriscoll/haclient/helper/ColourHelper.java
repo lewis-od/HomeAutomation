@@ -10,7 +10,7 @@ public class ColourHelper {
     private static int MIN_BRIGHTNESS = 0x02;
     private static int MAX_BRIGHTNESS = 0x1B;
 
-    public static int getEasybulbHue(Color colour) {
+    public static int colourToEasybulbHue(Color colour) {
         float[] hsb = Color.RGBtoHSB(
             colour.getRed(),
             colour.getGreen(),
