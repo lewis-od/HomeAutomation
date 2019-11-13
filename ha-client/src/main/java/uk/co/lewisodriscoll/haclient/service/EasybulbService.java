@@ -30,6 +30,7 @@ public class EasybulbService {
 
     private Logger log = Logger.getLogger(EasybulbService.class);
 
+    // TODO: Move to own service (ActionIngestionService?)
     public void performAction(HaAction action) {
         switch (action.getAction()) {
             case "TurnOn":
@@ -62,7 +63,7 @@ public class EasybulbService {
                 if (hsb[1] < 0.5f) {
                     turnLightWhite();
                 } else {
-                    setLightColour(colour);
+                    setLightColour(ColourHelper.colourToEasybulbHue(colour));
                 }
                 break;
 
@@ -83,13 +84,11 @@ public class EasybulbService {
         return sendCode(CODE_WHITE);
     }
 
-    public HaResponse setLightColour(Color colour) {
-        int hue = ColourHelper.colourToEasybulbHue(colour);
+    public HaResponse setLightColour(int hue) {
         return sendCode(CODE_COLOUR, hue);
     }
 
-    public HaResponse setLightBrightness(int percentage) {
-        int brightness = ColourHelper.percentageToEasybulb(percentage);
+    public HaResponse setLightBrightness(int brightness) {
         return sendCode(CODE_BRIGHTNESS, brightness);
     }
 

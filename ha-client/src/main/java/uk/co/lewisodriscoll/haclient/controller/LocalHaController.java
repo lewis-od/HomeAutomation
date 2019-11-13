@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
 import uk.co.lewisodriscoll.haclient.service.EasybulbService;
 
@@ -40,12 +41,14 @@ public class LocalHaController {
     @RequestMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
         Color colour = new Color(r, g, b);
-        return ResponseEntity.ok(easyBulbService.setLightColour(colour));
+        int hue = ColourHelper.colourToEasybulbHue(colour);
+        return ResponseEntity.ok(easyBulbService.setLightColour(hue));
     }
 
     @RequestMapping("/brightness")
     public ResponseEntity<HaResponse> brightness(@RequestParam int percentage) {
-        return ResponseEntity.ok(easyBulbService.setLightBrightness(percentage));
+        int brightness = ColourHelper.percentageToEasybulb(percentage);
+        return ResponseEntity.ok(easyBulbService.setLightBrightness(brightness));
     }
 
 }
