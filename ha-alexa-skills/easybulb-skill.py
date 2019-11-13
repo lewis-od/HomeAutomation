@@ -29,7 +29,7 @@ def send_sqs_message(msg_body):
 
     return msg
 
-def handlePowerControl(event, context):
+def handle_power_control(event, context):
     request_method = event['directive']['header']['name']
 
     response_header = event['directive']['header']
@@ -243,7 +243,7 @@ def lambda_handler(event, context):
         return handleDiscovery(event, context)
     elif event['directive']['header']['namespace'] == 'Alexa.PowerController':
         logger.debug('PowerController request: {}'.format(json.dumps(event)))
-        return handlePowerControl(event, context)
+        return handle_power_control(event, context)
     elif event['directive']['header']['namespace'] == 'Alexa.ColorController':
         logger.debug('ColorController request: {}'.format(json.dumps(event)))
         return handleColourControl(event, context)
