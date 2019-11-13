@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
+import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
+import uk.co.lewisodriscoll.haclient.service.ActionIngestionService;
 import uk.co.lewisodriscoll.haclient.service.EasybulbService;
 
 import java.awt.*;
@@ -16,39 +18,74 @@ import java.awt.*;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LocalHaController {
 
-    private EasybulbService easyBulbService;
+    private ActionIngestionService ingestionService;
 
     @Autowired
-    public LocalHaController(EasybulbService easyBulbService) {
-        this.easyBulbService = easyBulbService;
+    public LocalHaController(ActionIngestionService ingestionService) {
+        this.ingestionService = ingestionService;
     }
 
     @RequestMapping("/on")
     public ResponseEntity<HaResponse> on() {
-        return ResponseEntity.ok(easyBulbService.turnLightOn());
+        HaAction action = HaAction.builder()
+                .service("easybulb")
+                .action("TurnOn")
+                .build();
+
+        return responseToEntity(ingestionService.ingest(action));
     }
 
     @RequestMapping("/off")
     public ResponseEntity<HaResponse> off() {
-        return ResponseEntity.ok(easyBulbService.turnLightOff());
+        HaAction action = HaAction.builder()
+                .service("easybulb")
+                .action("TurnOff")
+                .build();
+
+        return responseToEntity(ingestionService.ingest(action));
     }
 
     @RequestMapping("/white")
     public ResponseEntity<HaResponse> white() {
-        return ResponseEntity.ok(easyBulbService.turnLightWhite());
+        Color white = Color.white;
+        HaAction action = HaAction.builder()
+                .service("easybulb")
+                .action("SetColor")
+                .value(ColourHelper.colourToString(white))
+                .build();
+
+        return responseToEntity(ingestionService.ingest(action));
     }
 
     @RequestMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
         Color colour = new Color(r, g, b);
-        int hue = ColourHelper.colourToEasybulbHue(colour);
-        return ResponseEntity.ok(easyBulbService.setLightColour(hue));
+        HaAction action = HaAction.builder()
+                .service("easybulb")
+                .action("SetColor")
+                .value(ColourHelper.colourToString(colour))
+                .build();
+
+        return responseToEntity(ingestionService.ingest(action));
     }
 
     @RequestMapping("/brightness")
     public ResponseEntity<HaResponse> brightness(@RequestParam int percentage) {
-        int brightness = ColourHelper.percentageToEasybulb(percentage);
-        return ResponseEntity.ok(easyBulbService.setLightBrightness(brightness));
+        HaAction action = HaAction.builder()
+                .service("easybulb")
+                .action("SetBrightness")
+                .value(String.valueOf(percentage))
+                .build();
+
+        return responseToEntity(ingestionService.ingest(action));
+    }
+
+    private ResponseEntity<HaResponse> responseToEntity(HaResponse response) {
+        if (response.getStatus() == HaResponse.Status.SUCCESS) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(402).body(response);
     }
 
 }

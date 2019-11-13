@@ -25,8 +25,13 @@ public class ColourHelper {
         return (int) (easybulbHue * MAX_COLOUR);
     }
 
+    public static String colourToString(Color colour) {
+        float[] hsb = Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
+        return String.format("%.4G, %.4G, %.4G", hsb[0], hsb[1], hsb[2]);
+    }
+
     public static int percentageToEasybulb(int percentage) {
         float fraction = percentage / 100.0f;
-        return (int) (fraction * MAX_BRIGHTNESS) + MIN_BRIGHTNESS;
+        return (int) (fraction * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + MIN_BRIGHTNESS;
     }
 }

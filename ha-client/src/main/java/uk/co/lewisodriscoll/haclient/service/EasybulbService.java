@@ -30,48 +30,6 @@ public class EasybulbService {
 
     private Logger log = Logger.getLogger(EasybulbService.class);
 
-    // TODO: Move to own service (ActionIngestionService?)
-    public void performAction(HaAction action) {
-        switch (action.getAction()) {
-            case "TurnOn":
-                turnLightOn();
-                break;
-
-            case "TurnOff":
-                turnLightOff();
-                break;
-
-            case "SetColor":
-                String[] parts = action.getValue().split(", ");
-
-                if (parts.length != 3) {
-                    log.error("Invalid colour: " + action.getAction());
-                }
-
-                float[] hsb = {0.0f, 0.0f, 0.0f};
-                try {
-                    for (int i = 0; i < 3; i++) {
-                        hsb[i] = Float.parseFloat(parts[i]);
-                    }
-                } catch (NumberFormatException e) {
-                    log.error("Invalid float format");
-                    log.error(e);
-                }
-                Color colour = Color.getHSBColor(hsb[0] / 360.0f, hsb[1], hsb[2]);
-
-                // Easybulb doesn't handle low saturation well - turn white
-                if (hsb[1] < 0.5f) {
-                    turnLightWhite();
-                } else {
-                    setLightColour(ColourHelper.colourToEasybulbHue(colour));
-                }
-                break;
-
-            default:
-                log.error("Unknown action: " + action.getAction());
-        }
-    }
-
     public HaResponse turnLightOn() {
         return sendCode(CODE_ON);
     }

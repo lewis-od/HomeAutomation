@@ -1,13 +1,11 @@
 package uk.co.lewisodriscoll.haclient.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class HaResponse {
     public enum Status {
         SUCCESS,

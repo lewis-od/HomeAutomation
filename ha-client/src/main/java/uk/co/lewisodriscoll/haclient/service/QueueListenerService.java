@@ -13,31 +13,19 @@ import java.io.IOException;
 public class QueueListenerService {
 
     @Autowired
-    private EasybulbService easyBulbService;
+    private ActionIngestionService ingestionService;
 
     private Logger log = Logger.getLogger(QueueListenerService.class);
 
     @JmsListener(destination = "home-automation")
     public void ingestAction(String requestJSON) throws JMSException {
-        log.info("Message received.");
+        log.info("Message received from queue");
         try {
             HaAction action = HaAction.fromJson(requestJSON);
-            log.info(action.toString());
-            processAction(action);
+            ingestionService.ingest(action);
         } catch (IOException e) {
             log.error("Encountered an error whilst parsing message: " + requestJSON, e);
             throw new JMSException("Encountered an error whilst parsing message");
-        }
-    }
-
-    private void processAction(HaAction action) {
-        switch (action.getService()) {
-            case "easybulb":
-                easyBulbService.performAction(action);
-                break;
-
-            default:
-                log.error("Unknown service name: " + action.getService());
         }
     }
 
