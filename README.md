@@ -18,6 +18,11 @@ The SQS messages are JSON of the format:
 ```
 The `action` parameter matches those from the [Alexa messages](https://developer.amazon.com/docs/smarthome/smart-home-skill-api-message-reference.html#lighting-and-tunable-lighting-control-messages).
 
+## Setup
+1. Create an SQS queue in `eu-west-1` called `home-automation`
+2. Follow the instructions in [ha-alexa-skill](ha-alexa-skill)
+3. Follow the instructions in [ha-client](ha-client)
+
 ## ToDo:
 - [x] Look into making an Alexa skill
 - [x] Tidy up Alexa skill code
