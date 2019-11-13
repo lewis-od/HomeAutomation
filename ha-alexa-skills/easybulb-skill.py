@@ -65,7 +65,7 @@ def construct_method_error_response(response_header, request_method):
     return error_response
 
 
-def construct_success_response(context_result, request_token):
+def construct_success_response(context_result, response_header, request_token):
     return {
         "context": context_result,
         "event": {
@@ -112,7 +112,7 @@ def handle_power_control(event, context):
         }]
     }
 
-    return construct_success_response(context_result, request_token)
+    return construct_success_response(context_result, response_header, request_token)
 
 
 def handle_colour_control(event, context):
@@ -148,7 +148,7 @@ def handle_colour_control(event, context):
         }]
     }
 
-    return construct_success_response(context_result, request_token)
+    return construct_success_response(context_result, response_header, request_token)
 
 
 def handleDiscovery(event, context):
