@@ -32,7 +32,7 @@ public class ColourHelper {
     }
 
     public static float[] getHSB(Color colour) {
-        return Color.RGBtoHSB(colour.getRed(), colour.getBlue(), colour.getGreen(), null);
+        return Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
     }
 
     public static float getHue(Color colour) {
