@@ -14,8 +14,8 @@ COPY mvnw mvnw
 COPY pom.xml pom.xml
 RUN ./mvnw dependency:go-offline -B
 
-# Copy whole project and build to jar
-COPY . .
+# Copy source and build to jar
+COPY src src
 RUN ./mvnw package -DskipTests
 
 # Run the jar
