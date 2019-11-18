@@ -109,7 +109,6 @@ def handle_power_control(event, context):
             "name": "powerState",
             "value": power_result,
             "timeOfSample": time.strftime("%Y-%m-%dT%H:%M:%S.00Z", time.gmtime()),
-            # "timeOfSample": datetime.datetime.now().replace(microsecond=0).isoformat() + ".52Z",
             "uncertaintyInMilliseconds": 500
         }]
     }
@@ -187,7 +186,7 @@ def handle_brightness_control(event, context):
     return construct_success_response(context_result, response_header, request_token)
 
 
-def handleDiscovery(event, context):
+def handle_discovery(event, context):
     payload = {
         'endpoints': [
             {
@@ -244,7 +243,7 @@ def handleDiscovery(event, context):
 def lambda_handler(event, context):
     if event['directive']['header']['namespace'] == 'Alexa.Discovery' and event['directive']['header']['name'] == 'Discover':
         logger.debug('Discover request: {}'.format(json.dumps(event)))
-        return handleDiscovery(event, context)
+        return handle_discovery(event, context)
     elif event['directive']['header']['namespace'] == 'Alexa.PowerController':
         logger.debug('PowerController request: {}'.format(json.dumps(event)))
         return handle_power_control(event, context)
