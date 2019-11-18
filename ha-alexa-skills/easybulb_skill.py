@@ -90,7 +90,7 @@ def construct_success_response(context_result, response_header, request_token):
     }
 
 
-def event_handler_wrapper(handler, event, context):
+def event_handler_wrapper(handler, event):
     request_namespace = event['directive']['header']['namespace']
     request_method = event['directive']['header']['name']
     request_token = event['directive']['endpoint']['scope']['token']
@@ -237,6 +237,6 @@ def lambda_handler(event, context):
     namespace = event['directive']['header']['namespace']
     if namespace in supported_namespaces:
         logger.debug('{} request: {}'.format(namespace, json.dumps(event)))
-        return event_handlers[namespace](event, context)
+        return event_handlers[namespace](event)
 
     logger.error('Unknown request received: {}'.format(json.dumps(event)))
