@@ -26,7 +26,7 @@ The `action` parameter matches those from the [Alexa messages](https://developer
 ## ToDo:
 - [x] Look into making an Alexa skill
 - [x] Tidy up Alexa skill code
-- [ ] Implement `SetBrightness` in Alexa skill
+- [x] Implement `SetBrightness` in Alexa skill
 - [ ] Use `maven-shade-plugin` to minify client jar
 - [x] Build for deployment using Docker
 - [ ] Better AWS credential management in client
