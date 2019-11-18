@@ -19,15 +19,8 @@ sqs_queue_url = os.environ.get('SQS_QUEUE_URL')
 
 
 def send_sqs_message(msg_body):
-    try:
-        msg = sqs_client.send_message(QueueUrl=sqs_queue_url,
-                                      MessageBody=msg_body)
-    except (ClientError, ParamValidationError) as e:
-        logging.error(e)
-        return None
-
+    msg = sqs_client.send_message(QueueUrl=sqs_queue_url, MessageBody=msg_body)
     logging.info("Sent SQS message: " + msg_body)
-
     return msg
 
 
