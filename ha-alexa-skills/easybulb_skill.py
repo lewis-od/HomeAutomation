@@ -6,8 +6,10 @@ import boto3
 from functools import partial
 from botocore.exceptions import ClientError, ParamValidationError
 
+
 class InvalidMethodException(Exception):
     pass
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -87,6 +89,7 @@ def construct_success_response(context_result, response_header, request_token):
         }
     }
 
+
 def event_handler_wrapper(handler, event, context):
     request_namespace = event['directive']['header']['namespace']
     request_method = event['directive']['header']['name']
@@ -105,15 +108,15 @@ def event_handler_wrapper(handler, event, context):
         return construct_method_error_response(response_header, request_method)
 
     context_result = {
-            "properties": [{
-                "namespace": request_namespace,
-                "name": result['name'],
-                "value": result['value'],
-                "timeOfSample": time.strftime("%Y-%m-%dT%H:%M:%S.00Z", time.gmtime()),
-                "uncertaintyInMilliseconds": 500
-            }]
-        }
-    
+        "properties": [{
+            "namespace": request_namespace,
+            "name": result['name'],
+            "value": result['value'],
+            "timeOfSample": time.strftime("%Y-%m-%dT%H:%M:%S.00Z", time.gmtime()),
+            "uncertaintyInMilliseconds": 500
+        }]
+    }
+
     return construct_success_response(context_result, response_header, request_token)
 
 
@@ -128,12 +131,13 @@ def power_handler(method, payload):
     sqs_message = json.dumps({'service': 'easybulb', 'action': method})
     send_sqs_message(sqs_message)
 
-    return { "name": "powerState", "value": power_result }
+    return {"name": "powerState", "value": power_result}
 
 
 def colour_handler(method, payload):
     if method != 'SetColor':
-        raise InvalidMethodException("Invalid PowerControl exception: " + method)
+        raise InvalidMethodException(
+            "Invalid PowerControl exception: " + method)
 
     colour = payload['color']
     hsv = [str(colour[k]) for k in ['hue', 'saturation', 'brightness']]
@@ -146,12 +150,13 @@ def colour_handler(method, payload):
     })
     sqs_result = send_sqs_message(sqs_message)
 
-    return { "name": "color", "value": colour }
+    return {"name": "color", "value": colour}
 
 
 def brightness_handler(method, payload):
     if method != 'SetBrightness':
-        raise InvalidMethodException("Invalid BrightnessControl method: " + method)
+        raise InvalidMethodException(
+            "Invalid BrightnessControl method: " + method)
 
     brightness = payload['brightness']
     brightness_str = str(brightness)
@@ -163,7 +168,7 @@ def brightness_handler(method, payload):
     })
     sqs_result = send_sqs_message(sqs_message)
 
-    return { "name": "brightness", "value": brightness }
+    return {"name": "brightness", "value": brightness}
 
 
 def discovery_handler(event, context):
@@ -208,7 +213,7 @@ def discovery_handler(event, context):
                         "properties": {
                             "supported": [{"name": "brightness"}],
                             "proactivelyReported": False,
-                            "retrievable": False 
+                            "retrievable": False
                         }
                     },
                 ]
