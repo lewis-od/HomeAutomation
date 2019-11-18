@@ -152,6 +152,40 @@ def handle_colour_control(event, context):
 
     return construct_success_response(context_result, response_header, request_token)
 
+def handle_brightness_control(event, context):
+    request_method = event['directive']['header']['name']
+    request_token = event['directive']['endpoint']['scope']['token']
+
+    response_header = construct_response_header(event)
+
+    if request_method != 'SetBrightness':
+        return construct_method_error_response(response_header, request_method)
+
+    brightness = event['directive']['payload']['brightness']
+    brightness_str = str(brightness)
+
+    sqs_message = json.dumps({
+        "service": "easybulb",
+        "action": request_method,
+        "value": brightness
+    })
+    sqs_result = send_sqs_message(sqs_message)
+
+    if sqs_result is None:
+        return construct_sqs_error_response(response_header)
+
+    context_result = {
+        "properties": [{
+            "namespace": "Alexa.ColorController",
+            "name": "brightness",
+            "value": brightness,
+            "timeOfSample": time.strftime("%Y-%m-%dT%H:%M:%S.00Z", time.gmtime()),
+            "uncertaintyInMilliseconds": 500
+        }]
+    }
+
+    return construct_success_response(context_result, response_header, request_token)
+
 
 def handleDiscovery(event, context):
     payload = {
@@ -187,7 +221,17 @@ def handleDiscovery(event, context):
                             "proactivelyReported": False,
                             "retrievable": False
                         }
-                    }
+                    },
+                    {
+                        "type": "AlexaInterface",
+                        "interface": "Alexa.BrightnessController",
+                        "version": "3",
+                        "properties": {
+                            "supported": [{"name": "brightness"}],
+                            "proactivelyReported": False,
+                            "retrievable": False 
+                        }
+                    },
                 ]
             },
         ]
@@ -207,5 +251,8 @@ def lambda_handler(event, context):
     elif event['directive']['header']['namespace'] == 'Alexa.ColorController':
         logger.debug('ColorController request: {}'.format(json.dumps(event)))
         return handle_colour_control(event, context)
+    elif event['directive']['header']['namespace'] == 'Alexa.BrightnessController':
+        logger.debug('BrightnessController request: {}'.format(json.dumps(event)))
+        return handle_brightness_control(event, context)
 
     logger.error('Unknown request received: {}'.format(json.dumps(event)))
