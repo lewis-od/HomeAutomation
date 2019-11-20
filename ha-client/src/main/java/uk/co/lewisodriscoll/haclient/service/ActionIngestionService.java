@@ -1,6 +1,7 @@
 package uk.co.lewisodriscoll.haclient.service;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
@@ -14,7 +15,7 @@ public class ActionIngestionService {
 
     private EasybulbService easybulbService;
 
-    private Logger log = Logger.getLogger(ActionIngestionService.class);
+    private Logger log = LoggerFactory.getLogger(ActionIngestionService.class);
 
     @Autowired
     public ActionIngestionService(EasybulbService easybulbService) {

@@ -1,6 +1,7 @@
 package uk.co.lewisodriscoll.haclient.service;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
@@ -28,7 +29,7 @@ public class EasybulbService {
     @Value("${easybulb.port}")
     private int easybulbBoxPort;
 
-    private Logger log = Logger.getLogger(EasybulbService.class);
+    private Logger log = LoggerFactory.getLogger(EasybulbService.class);
 
     public HaResponse turnLightOn() {
         return sendCode(CODE_ON);

@@ -1,6 +1,7 @@
 package uk.co.lewisodriscoll.haclient.service;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class QueueListenerService {
     @Autowired
     private ActionIngestionService ingestionService;
 
-    private Logger log = Logger.getLogger(QueueListenerService.class);
+    private Logger log = LoggerFactory.getLogger(QueueListenerService.class);
 
     @JmsListener(destination = "home-automation")
     public void ingestAction(String requestJSON) throws JMSException {
