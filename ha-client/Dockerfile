@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:latest as build
 
 # Install java 8
 RUN apk add openjdk8
@@ -18,7 +18,18 @@ RUN ./mvnw dependency:go-offline -B
 COPY src src
 RUN ./mvnw package -DskipTests
 
+# New Docker image for deployment - doesn't include mvn deps or src
+FROM alpine:latest
+
+# Install java 8
+RUN apk add openjdk8
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+
+WORKDIR /app
+
+COPY --from=build /app/target/ha-client-*.jar /app/ha-client.jar
+
 # Run the jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/target/ha-client-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/ha-client.jar"]
 
