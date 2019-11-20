@@ -24,11 +24,5 @@ The `action` parameter matches those from the [Alexa messages](https://developer
 3. Follow the instructions in [ha-client](ha-client)
 
 ## ToDo:
-- [x] Look into making an Alexa skill
-- [x] Tidy up Alexa skill code
-- [x] Implement `SetBrightness` in Alexa skill
-- [ ] Use `maven-shade-plugin` to minify client jar
-- [x] Build for deployment using Docker
 - [ ] Better AWS credential management in client
-- [ ] Build Docker image using mvn
-- [ ] Send client logs to log file
+- [ ] Allow control of dotstar using Raspberry Pi GPIO pins
