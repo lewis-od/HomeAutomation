@@ -31,5 +31,6 @@ COPY --from=build /app/target/ha-client-*.jar /app/ha-client.jar
 
 # Run the jar
 EXPOSE 8080
+VOLUME ["/app/logs"]
 ENTRYPOINT ["java", "-jar", "/app/ha-client.jar"]
 
