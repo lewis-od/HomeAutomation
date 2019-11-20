@@ -13,36 +13,33 @@ echo "${BLUE}Building Docker image...${NC}"
 docker build -t ha-client .
 
 echo "${BLUE}Killing old container...${NC}"
-docker kill home-automation &> /dev/null
+docker kill home-automation > /dev/null 2>&1
 
 killed_container=$?
-if [ $killed_container -eq 0 ]
-then
+if [ $killed_container -eq 0 ]; then
   echo "${GREEN}Container killed.${NC}"
 else
   echo "${RED}Container not running.${NC}"
 fi
 
-docker rm home-automation &> /dev/null
+docker rm home-automation > /dev/null 2>&1
 
-if [ -d "`pwd`/$LOG_DIR" ]
-then
-  echo "${BLUE}Deleting old logs...${NC}"
-  rm -rf "`pwd`/$LOG_DIR" &> /dev/null
-  logs_deleted=$?
-  echo "${GREEN}Logs deleted.${NC}"
+log_location=`pwd`/$LOG_DIR
+if ! [ -d $log_location ]; then
+  echo "${BLUE}Creating log directory...${NC}"
+  mkdir $log_location
+  echo "${GREEN}Directory created at:${NC} $log_location"
 fi
 
 echo "${BLUE}Starting new container...${NC}"
 container_id=$(docker run -d -p 8080:8080 \
-  -v `pwd`/${LOG_DIR}:/app/logs \
+  --mount type=bind,source=$log_location,target=/app/logs \
   --restart unless-stopped \
   --name home-automation \
   ha-client)
 
 run_successful=$?
-if [ $run_successful -eq 0 ]
-then
+if [ $run_successful -eq 0 ]; then
   truncated_id=$(echo $container_id | cut -c 1-12)
   echo "${GREEN}Container started with ID:${NC} ${truncated_id}"
 else
