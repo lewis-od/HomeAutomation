@@ -1,8 +1,12 @@
 #!/bin/sh
 
+# Directory to output logs to
+LOG_DIR='logs'
+
+# Colours for pretty printing
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-NC='\033[0m' # No Color 
+NC='\033[0m' # No Color
 
 echo "${GREEN}Building Docker image...${NC}"
 docker build -t ha-client .
@@ -18,9 +22,17 @@ else
   echo "${RED}Container not running.${NC}"
 fi
 
+if [ -d "`pwd`/$LOG_DIR" ]
+then
+  echo "${GREEN}Deleting old logs...${NC}"
+  rm -rf "`pwd`/$LOG_DIR" &> /dev/null
+  logs_deleted=$?
+  echo "${GREEN}Logs deleted.${NC}"
+fi
+
 echo "${GREEN}Starting new container...${NC}"
 docker run -d -p 8080:8080 \
-  -v "$(pwd)"/logs:/app/logs \
+  -v `pwd`/${LOG_DIR}:/app/logs \
   --restart unless-stopped \
   --name home-automation \
   ha-client
