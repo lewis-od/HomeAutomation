@@ -23,7 +23,7 @@ public class ActionIngestionService {
     }
 
     public HaResponse ingest(HaAction action) {
-        log.info("Ingesting action: " + action.toString());
+        log.trace("Ingesting action: " + action.toString());
 
         switch (action.getService()) {
             case "easybulb":
