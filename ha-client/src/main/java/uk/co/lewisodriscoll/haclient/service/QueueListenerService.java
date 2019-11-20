@@ -20,7 +20,7 @@ public class QueueListenerService {
 
     @JmsListener(destination = "home-automation")
     public void ingestAction(String requestJSON) throws JMSException {
-        log.info("Message received from queue");
+        log.trace("Message received from queue");
         try {
             HaAction action = HaAction.fromJson(requestJSON);
             ingestionService.ingest(action);
