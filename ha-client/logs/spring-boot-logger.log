@@ -1,0 +1,23 @@
+2019-11-22 17:24:27,192 INFO org.springframework.boot.StartupInfoLogger [main] Starting HaClientApplication on Lewis-MBP with PID 82292 (/Users/Lewis/Code/HomeAutomation/ha-client/target/classes started by Lewis in /Users/Lewis/Code/HomeAutomation/ha-client)
+2019-11-22 17:24:27,198 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.0.RELEASE, Spring v5.2.0.RELEASE
+2019-11-22 17:24:27,199 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2019-11-22 17:24:30,202 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2019-11-22 17:24:30,225 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2019-11-22 17:24:30,226 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2019-11-22 17:24:30,228 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.27]
+2019-11-22 17:24:30,492 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2019-11-22 17:24:30,493 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3148 ms
+2019-11-22 17:24:32,045 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2019-11-22 17:24:32,394 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2019-11-22 17:24:32,466 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2019-11-22 17:24:32,473 INFO org.springframework.boot.StartupInfoLogger [main] Started HaClientApplication in 6.923 seconds (JVM running for 8.412)
+2019-11-22 17:24:58,700 TRACE uk.co.lewisodriscoll.haclient.service.QueueListenerService [DefaultMessageListenerContainer-1] Message received from queue
+2019-11-22 17:24:58,716 TRACE uk.co.lewisodriscoll.haclient.service.ActionIngestionService [DefaultMessageListenerContainer-1] Ingesting action: HaAction(service=easybulb, action=SetColor, value=39.0, 1.0, 1.0)
+2019-11-22 17:25:05,335 TRACE uk.co.lewisodriscoll.haclient.service.QueueListenerService [DefaultMessageListenerContainer-1] Message received from queue
+2019-11-22 17:25:05,336 TRACE uk.co.lewisodriscoll.haclient.service.ActionIngestionService [DefaultMessageListenerContainer-1] Ingesting action: HaAction(service=easybulb, action=SetColor, value=0.0, 1.0, 1.0)
+2019-11-22 17:25:11,169 TRACE uk.co.lewisodriscoll.haclient.service.QueueListenerService [DefaultMessageListenerContainer-1] Message received from queue
+2019-11-22 17:25:11,171 TRACE uk.co.lewisodriscoll.haclient.service.ActionIngestionService [DefaultMessageListenerContainer-1] Ingesting action: HaAction(service=easybulb, action=SetColor, value=120.0, 1.0, 1.0)
+2019-11-22 17:25:16,802 TRACE uk.co.lewisodriscoll.haclient.service.QueueListenerService [DefaultMessageListenerContainer-1] Message received from queue
+2019-11-22 17:25:16,805 TRACE uk.co.lewisodriscoll.haclient.service.ActionIngestionService [DefaultMessageListenerContainer-1] Ingesting action: HaAction(service=easybulb, action=SetColor, value=240.0, 1.0, 1.0)
+2019-11-22 17:25:22,537 TRACE uk.co.lewisodriscoll.haclient.service.QueueListenerService [DefaultMessageListenerContainer-1] Message received from queue
+2019-11-22 17:25:22,538 TRACE uk.co.lewisodriscoll.haclient.service.ActionIngestionService [DefaultMessageListenerContainer-1] Ingesting action: HaAction(service=easybulb, action=SetColor, value=0.0, 0.0, 1.0)

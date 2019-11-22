@@ -11,5 +11,5 @@ public class BrightnessHelper {
         float fraction = percentage / 100.0f;
         return (int) (fraction * (MAX_BRIGHTNESS - MIN_BRIGHTNESS)) + MIN_BRIGHTNESS;
     }
-    
+
 }

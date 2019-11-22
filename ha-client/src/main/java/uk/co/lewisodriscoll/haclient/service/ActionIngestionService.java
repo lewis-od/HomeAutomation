@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.lewisodriscoll.haclient.domain.HaColour;
+import uk.co.lewisodriscoll.haclient.exception.InvalidColourFormatException;
 import uk.co.lewisodriscoll.haclient.helper.BrightnessHelper;
 import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
@@ -50,10 +51,10 @@ public class ActionIngestionService {
                 HaColour colour = null;
                 try {
                     colour = new HaColour(action.getValue());
-                } catch (NumberFormatException e) {
+                } catch (InvalidColourFormatException e) {
                     return HaResponse.builder()
                             .status(HaResponse.Status.ERROR)
-                            .message("Invalid colour format: " + action.getValue())
+                            .message(e.getMessage())
                             .build();
                 }
 
