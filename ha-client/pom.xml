@@ -21,6 +21,7 @@
 		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 		<spring-jms.version>5.2.0.RELEASE</spring-jms.version>
 		<lombok.version>1.18.10</lombok.version>
+		<junit.version>4.12</junit.version>
 	</properties>
 
 	<dependencies>
@@ -66,6 +67,15 @@
 			<artifactId>amazon-sqs-java-messaging-lib</artifactId>
 			<version>${amazon-sqs-java-messaging-lib.version}</version>
 			<type>jar</type>
+		</dependency>
+
+		<!--Test dependencies-->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
