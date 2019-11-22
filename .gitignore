@@ -18,6 +18,7 @@
 
 # HA Client
 ha-client/target
+ha-client/logs
 ha-client/src/main/resources/AwsCredentials.properties
 ha-client/.mvn/wrapper/maven-wrapper.jar
 
