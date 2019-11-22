@@ -4,11 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
+import uk.co.lewisodriscoll.haclient.domain.HaColour;
+import uk.co.lewisodriscoll.haclient.helper.BrightnessHelper;
 import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
-
-import java.awt.Color;
 
 @Service
 public class ActionIngestionService {
@@ -48,9 +47,9 @@ public class ActionIngestionService {
                 return easybulbService.turnLightOff();
 
             case "SetColor":
-                Color colour = null;
+                HaColour colour = null;
                 try {
-                    colour = ColourHelper.stringToColour(action.getValue());
+                    colour = new HaColour(action.getValue());
                 } catch (NumberFormatException e) {
                     return HaResponse.builder()
                             .status(HaResponse.Status.ERROR)
@@ -58,14 +57,12 @@ public class ActionIngestionService {
                             .build();
                 }
 
-                float saturation = ColourHelper.getSaturation(colour);
-
                 // Easybulb doesn't handle low saturation well - turn white
-                if (saturation < 0.5f) {
+                if (colour.getSaturation() < 0.5f) {
                     return easybulbService.turnLightWhite();
                 }
 
-                return easybulbService.setLightColour(ColourHelper.colourToEasybulbHue(colour));
+                return easybulbService.setLightColour(colour.getEasybulbHue());
 
             case "SetBrightness":
                 int percentage;
@@ -78,7 +75,7 @@ public class ActionIngestionService {
                             .build();
                 }
 
-                return easybulbService.setLightBrightness(ColourHelper.percentageToEasybulb(percentage));
+                return easybulbService.setLightBrightness(BrightnessHelper.percentageToEasybulb(percentage));
 
             default:
                 String errorMessage = "Unknown action: " + action.getAction();

@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.lewisodriscoll.haclient.helper.ColourHelper;
+import uk.co.lewisodriscoll.haclient.domain.HaColour;
 import uk.co.lewisodriscoll.haclient.model.HaAction;
 import uk.co.lewisodriscoll.haclient.model.HaResponse;
 import uk.co.lewisodriscoll.haclient.service.ActionIngestionService;
-import uk.co.lewisodriscoll.haclient.service.EasybulbService;
 
 import java.awt.*;
 
@@ -48,11 +47,11 @@ public class LocalHaController {
 
     @GetMapping("/white")
     public ResponseEntity<HaResponse> white() {
-        Color white = Color.white;
+        HaColour whiteColour = new HaColour(Color.WHITE);
         HaAction action = HaAction.builder()
                 .service("easybulb")
                 .action("SetColor")
-                .value(ColourHelper.colourToString(white))
+                .value(whiteColour.toString())
                 .build();
 
         return responseToEntity(ingestionService.ingest(action));
@@ -60,11 +59,11 @@ public class LocalHaController {
 
     @GetMapping("/colour")
     public ResponseEntity<HaResponse> colour(@RequestParam int r, @RequestParam int g, @RequestParam int b) {
-        Color colour = new Color(r, g, b);
+        HaColour colour = new HaColour(r, g, b);
         HaAction action = HaAction.builder()
                 .service("easybulb")
                 .action("SetColor")
-                .value(ColourHelper.colourToString(colour))
+                .value(colour.toString())
                 .build();
 
         return responseToEntity(ingestionService.ingest(action));
