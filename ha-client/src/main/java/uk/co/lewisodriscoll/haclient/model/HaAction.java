@@ -17,14 +17,14 @@ import java.io.IOException;
 public class HaAction {
 
     @NonNull
-    private String service;
+    private final String service;
 
     @NonNull
-    private String action;
+    private final String action;
 
-    private String value;
+    private final String value;
 
-    public static HaAction fromJson(String json) throws JsonProcessingException, IOException {
+    public static HaAction fromJson(final String json) throws JsonProcessingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, HaAction.class);
     }

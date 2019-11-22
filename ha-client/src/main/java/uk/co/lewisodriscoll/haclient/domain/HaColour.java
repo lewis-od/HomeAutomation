@@ -11,15 +11,15 @@ public class HaColour {
 
     private final Color colour;
 
-    public HaColour(String colourString) throws InvalidColourFormatException {
+    public HaColour(final String colourString) throws InvalidColourFormatException {
         this.colour = stringToColour(colourString);
     }
 
-    public HaColour(Color colour) {
+    public HaColour(final Color colour) {
         this.colour = colour;
     }
 
-    public HaColour(int red, int green, int blue) {
+    public HaColour(final int red, final int green, final int blue) {
         this.colour = new Color(red, green, blue);
     }
 
@@ -44,7 +44,7 @@ public class HaColour {
         return String.format("%.4G, %.4G, %.4G", hsb[0], hsb[1], hsb[2]);
     }
 
-    private Color stringToColour(String colourString) throws InvalidColourFormatException {
+    private Color stringToColour(final String colourString) throws InvalidColourFormatException {
         String[] parts = colourString.split(", ");
 
         if (parts.length != 3) {

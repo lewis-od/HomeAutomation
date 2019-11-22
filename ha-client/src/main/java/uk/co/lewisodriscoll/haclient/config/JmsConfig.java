@@ -19,7 +19,7 @@ import javax.jms.Session;
 @EnableJms
 public class JmsConfig {
 
-    private SQSConnectionFactory connectionFactory = new SQSConnectionFactory(
+    private final SQSConnectionFactory connectionFactory = new SQSConnectionFactory(
             new ProviderConfiguration(),
             AmazonSQSClient.builder()
                 .withCredentials(new ClasspathPropertiesFileCredentialsProvider())

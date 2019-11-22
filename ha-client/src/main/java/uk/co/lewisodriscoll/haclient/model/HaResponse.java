@@ -12,6 +12,6 @@ public class HaResponse {
         ERROR;
     }
 
-    private Status status;
-    private String message;
+    private final Status status;
+    private final String message;
 }

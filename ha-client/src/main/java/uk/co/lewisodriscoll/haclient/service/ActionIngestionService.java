@@ -13,16 +13,16 @@ import uk.co.lewisodriscoll.haclient.model.HaResponse;
 @Service
 public class ActionIngestionService {
 
-    private EasybulbService easybulbService;
+    private final EasybulbService easybulbService;
 
-    private Logger log = LoggerFactory.getLogger(ActionIngestionService.class);
+    private final Logger log = LoggerFactory.getLogger(ActionIngestionService.class);
 
     @Autowired
     public ActionIngestionService(EasybulbService easybulbService) {
         this.easybulbService = easybulbService;
     }
 
-    public HaResponse ingest(HaAction action) {
+    public HaResponse ingest(final HaAction action) {
         log.trace("Ingesting action: " + action.toString());
 
         switch (action.getService()) {
@@ -39,7 +39,7 @@ public class ActionIngestionService {
         }
     }
 
-    private HaResponse ingestEasybulbAction(HaAction action) {
+    private HaResponse ingestEasybulbAction(final HaAction action) {
         switch (action.getAction()) {
             case "TurnOn":
                 return easybulbService.turnLightOn();

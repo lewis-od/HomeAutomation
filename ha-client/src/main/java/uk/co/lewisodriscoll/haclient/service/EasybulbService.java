@@ -40,15 +40,15 @@ public class EasybulbService {
         return sendCode(CODE_WHITE);
     }
 
-    public HaResponse setLightColour(int hue) {
+    public HaResponse setLightColour(final int hue) {
         return sendCode(CODE_COLOUR, hue);
     }
 
-    public HaResponse setLightBrightness(int brightness) {
+    public HaResponse setLightBrightness(final int brightness) {
         return sendCode(CODE_BRIGHTNESS, brightness);
     }
 
-    private HaResponse sendCode(int code, int value) {
+    private HaResponse sendCode(final int code, final int value) {
         byte[] paddedCode = { (byte) code, (byte) value, 0x55 };
         try {
             sendBytes(paddedCode);
@@ -63,11 +63,11 @@ public class EasybulbService {
         return new HaResponse(HaResponse.Status.SUCCESS, "Action completed");
     }
 
-    private HaResponse sendCode(int code) {
+    private HaResponse sendCode(final int code) {
         return sendCode(code, 0x00);
     }
 
-    private void sendBytes(byte[] bytesToSend) throws IOException {
+    private void sendBytes(final byte[] bytesToSend) throws IOException {
         DatagramPacket packet = new DatagramPacket(
             bytesToSend,
             bytesToSend.length,

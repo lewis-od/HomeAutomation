@@ -13,13 +13,17 @@ import java.io.IOException;
 @Service
 public class QueueListenerService {
 
-    @Autowired
-    private ActionIngestionService ingestionService;
+    private final ActionIngestionService ingestionService;
 
-    private Logger log = LoggerFactory.getLogger(QueueListenerService.class);
+    @Autowired
+    public QueueListenerService(ActionIngestionService ingestionService) {
+        this.ingestionService = ingestionService;
+    }
+
+    private final Logger log = LoggerFactory.getLogger(QueueListenerService.class);
 
     @JmsListener(destination = "home-automation")
-    public void ingestAction(String requestJSON) throws JMSException {
+    public void ingestAction(final String requestJSON) throws JMSException {
         log.trace("Message received from queue");
         try {
             HaAction action = HaAction.fromJson(requestJSON);
