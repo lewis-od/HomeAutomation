@@ -10,6 +10,8 @@ import uk.co.lewisodriscoll.haclient.model.HaAction;
 
 import javax.jms.JMSException;
 
+import java.io.IOException;
+
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,11 +20,6 @@ import static org.mockito.Mockito.verify;
 public class QueueListenerServiceTest {
 
     private static final String MESSAGE_JSON = "{ \"service\": \"easybulb\", \"action\": \"TurnOn\" }";
-
-    private static final HaAction MESSAGE_ACTION = HaAction.builder()
-            .service("easybulb")
-            .action("TurnOn")
-            .build();
 
     @Mock
     private ActionIngestionService ingestionService;
@@ -36,10 +33,10 @@ public class QueueListenerServiceTest {
     }
 
     @Test
-    public void testReceivesMessage() throws JMSException {
+    public void testReceivesMessage() throws JMSException, IOException {
         listenerService.ingestAction(MESSAGE_JSON);
 
-        verify(ingestionService, times(1)).ingest(MESSAGE_ACTION);
+        verify(ingestionService, times(1)).ingest(HaAction.fromJson(MESSAGE_JSON));
     }
 
 }
