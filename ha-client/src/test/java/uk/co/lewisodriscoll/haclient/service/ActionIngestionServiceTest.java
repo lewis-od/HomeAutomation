@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.co.lewisodriscoll.haclient.domain.HaColour;
 import uk.co.lewisodriscoll.haclient.model.HaAction;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

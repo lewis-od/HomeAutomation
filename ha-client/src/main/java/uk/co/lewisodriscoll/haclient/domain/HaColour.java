@@ -2,7 +2,7 @@ package uk.co.lewisodriscoll.haclient.domain;
 
 import uk.co.lewisodriscoll.haclient.exception.InvalidColourFormatException;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class HaColour {
 
