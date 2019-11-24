@@ -41,7 +41,7 @@ public class LocalHaControllerTest {
                 .build();
     }
 
-    private Color givenColour = new Color(255, 164, 48);
+    private final Color givenColour = new Color(255, 164, 48);
     private HaAction givenSetColourAction() {
         HaColour givenHaColour = new HaColour(givenColour);
         return HaAction.builder()
@@ -51,7 +51,7 @@ public class LocalHaControllerTest {
                 .build();
     }
 
-    private int givenBrightness = 75;
+    private final int givenBrightness = 75;
     private HaAction givenSetBrightnesAction() {
         return HaAction.builder()
                 .service("easybulb")
